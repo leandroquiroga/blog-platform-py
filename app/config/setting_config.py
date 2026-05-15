@@ -1,5 +1,5 @@
 from pydantic import Field
-from pydantic_settings import BaseSettings,  SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     """ Configuration settings for the application. """
