@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from app.routes.blog_routes import router as blog_router
 from app.config.database_config import DatabaseConfig
 from app.config.setting_config import settings
 
@@ -19,3 +20,5 @@ app = FastAPI(
 )
 
 
+# Routes
+app.include_router(blog_router)
