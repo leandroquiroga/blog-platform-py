@@ -1,16 +1,17 @@
-from app.services.blog_service import BlogService
-from app.repositories.blog_repository import BlogRepository
-from app.utils.cache_utils import CacheUtils
-from app.config.redis_config import RedisConfig
-
-def get_blog_service() -> BlogService:
+def get_blog_service():
     """ Dependency to get the BlogService instance. """
+    from app.services.blog_service import BlogService
+    from app.repositories.blog_repository import BlogRepository
     repository = BlogRepository()
-    service = BlogService(repository)
+    cache = get_cache_utils()
+    service = BlogService(repository, cache)
     return service
   
-def get_cache_utils() -> CacheUtils:
+
+
+def get_cache_utils():
     """ Dependency to get the CacheUtils instance. """
-    redis_config = RedisConfig()
-    cache = CacheUtils(redis_config)
-    return cache
+    from app.config.redis_config import redis_client
+    from app.utils.cache_utils import CacheUtils
+    
+    return CacheUtils(redis_client)
