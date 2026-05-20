@@ -41,7 +41,7 @@ class PostCreateSchema(BaseModel):
     
 class PostResponseSchema(PostCreateSchema):
     """ Schema for the response of a blog post. """
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="id")
     created_at: datetime
     updated_at: datetime
     
