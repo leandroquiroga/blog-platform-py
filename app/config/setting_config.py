@@ -8,6 +8,9 @@ class Settings(BaseSettings):
     REDIS_HOST: str = Field(validation_alias="REDIS_HOST")
     REDIS_PORT: int = Field(validation_alias="REDIS_PORT")
     REDIS_DB: int = Field(validation_alias="REDIS_DB")
+    JWT_SECRET_KEY: str = Field(validation_alias="JWT_SECRET_KEY")
+    JWT_ALGORITHM: str = Field(validation_alias="JWT_ALGORITHM")
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(validation_alias="JWT_ACCESS_TOKEN_EXPIRE_MINUTES")
     
     RATE_LIMIT: str = Field(
         default="10/minute",
