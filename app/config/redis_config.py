@@ -1,5 +1,5 @@
 from redis.asyncio import Redis
-from app.config import settings
+from app.config.setting_config import settings
 
 redis_client: Redis | None = None
 
