@@ -5,7 +5,7 @@ class UserCreateSchema(BaseModel):
     """ Schema for user data """
     username: str = Field(..., min_length=3, max_length=50)
     email: str
-    created_at: datetime
+    password: str = Field(..., min_length=6)
 
 class UserResponseSchema(BaseModel):
     """ Schema for user response data """
