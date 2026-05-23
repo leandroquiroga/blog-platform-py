@@ -1,6 +1,7 @@
 from beanie import init_beanie
 from pymongo import AsyncMongoClient
 from app.models.blog_models import BlogModel
+from app.models.user_models import UserModel
 
 
 class DatabaseConfig:
@@ -16,7 +17,7 @@ class DatabaseConfig:
         self.client = AsyncMongoClient(self.url)
         database = self.client[self.database_name]
         
-        await init_beanie(database, document_models=[BlogModel])
+        await init_beanie(database, document_models=[BlogModel, UserModel])
         
         return database
       
