@@ -22,7 +22,6 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer,  HTTPAuthorizationCredentials
 from app.models.user_models import UserModel
 
-# Security dependency for authentication
 security = HTTPBearer(auto_error=False)
 
 
@@ -36,7 +35,6 @@ def get_auth_service():
 
 
 
-# Dependency to get the current authenticated user
 async def get_current_user(   
     credentials: HTTPAuthorizationCredentials = Depends(security),
     service: AuthService = Depends(get_auth_service),) -> UserModel:
