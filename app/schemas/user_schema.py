@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
+from app.utils.validation_utils import PyObjectId
 
 class UserCreateSchema(BaseModel):
     """ Schema for user data """
@@ -9,7 +10,7 @@ class UserCreateSchema(BaseModel):
 
 class UserResponseSchema(BaseModel):
     """ Schema for user response data """
-    id: str
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="id")
     username: str
     email: str
     created_at: datetime
