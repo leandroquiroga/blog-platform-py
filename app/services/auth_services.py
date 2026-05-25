@@ -13,7 +13,7 @@ class AuthService:
     async def register_user(self, user_data: UserCreateSchema) -> UserResponseSchema:
         """ Register a new user """
         existing_user = await self.user_repository.find_user_by_email(user_data.email)
-        
+        print("USER REGISTER", user_data)
         if existing_user:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
         
@@ -45,14 +45,13 @@ class AuthService:
     async def get_current_user(self, token: str) -> UserModel:
         """ Get the current authenticated user """
         payload = decode_access_token(token)
-        
         if not payload:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
         
         user_id = payload.get("sub")
         
         if not user_id:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User ID not found in token")
         
         user = await UserModel.get(user_id)
         
