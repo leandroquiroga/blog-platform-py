@@ -4,6 +4,7 @@ from datetime import datetime
 
 class BlogModel(Document):
     """ Model for a blog post. """
+    author_id: str = Field(default="")
     title: str = Field(..., min_length=3, max_length=50)
     content: str = Field(..., min_length=10, max_length=500)
     category: str = Field(..., min_length=3, max_length=20)
