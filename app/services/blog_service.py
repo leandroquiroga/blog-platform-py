@@ -11,9 +11,9 @@ class BlogService:
         self.repository = repository
         self.cache = cache
 
-    async def create_post(self, post_data: PostCreateSchema) -> PostResponseSchema:
+    async def create_post(self, post_data: PostCreateSchema, author_id: str) -> PostResponseSchema:
         """Create a new blog post."""
-        post = await self.repository.create_post(post_data)
+        post = await self.repository.create_post(post_data, author_id)
 
         #Invalid cache after creating a new post
         if self.cache:
@@ -74,7 +74,7 @@ class BlogService:
         return [PostResponseSchema.model_validate(post) for post in posts]
 
     async def update_post(
-        self, post_id: str, post_data: PostCreateSchema
+        self, post_id: str, post_data: PostCreateSchema, author_id: str
     ) -> PostResponseSchema:
         """Update a blog post by ID"""
 
@@ -82,7 +82,7 @@ class BlogService:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid post ID"
             )
-        post = await self.repository.update_post(post_id, post_data)
+        post = await self.repository.update_post(post_id, post_data, author_id)
 
         if not post:
             raise HTTPException(
@@ -93,14 +93,14 @@ class BlogService:
             await self.cache.clear_cache("posts:*")
         return PostResponseSchema.model_validate(post)
 
-    async def delete_post(self, post_id: str) -> bool:
+    async def delete_post(self, post_id: str, author_id: str) -> bool:
         """Delete a blog post by ID"""
 
         if not ObjectId.is_valid(post_id):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid post ID"
             )
-        deleted = await self.repository.delete_post(post_id)
+        deleted = await self.repository.delete_post(post_id, author_id)
         if not deleted:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Post not found"

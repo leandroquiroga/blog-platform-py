@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.services.auth_services import AuthService
-from app.repositories.user_repository import UserRepository
 from app.schemas.user_schema import UserCreateSchema, UserResponseSchema, LoginSchema, TokenSchema
-from app.dependencies import get_auth_service, get_current_user
+from app.dependencies import get_auth_service
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
