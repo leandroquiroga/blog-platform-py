@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from app.schemas.blog_schema import PostCreateSchema
 from app.models.blog_models import BlogModel
-
+from datetime import datetime
 
 class BlogRepository:
     """Repository for managing blog posts."""
@@ -44,6 +44,7 @@ class BlogRepository:
         post.category = post_data.category
         post.tags = post_data.tags
         post.author_id = author_id
+        post.updated_at = datetime.now()
         await post.save()
         return post
 
