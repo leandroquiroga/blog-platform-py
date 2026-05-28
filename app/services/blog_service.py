@@ -17,7 +17,9 @@ class BlogService:
 
         #Invalid cache after creating a new post
         if self.cache:
-            await self.cache.clear_cache("posts:*")
+            await self.cache.clear_cache("posts:all")
+            await self.cache.clear_cache(f"posts:search:*")
+            await self.cache.clear_cache(f"posts:author:{author_id}")
             
         return PostResponseSchema.model_validate(post)
 
@@ -90,7 +92,10 @@ class BlogService:
             )
         if self.cache:
             await self.cache.clear_cache(f"post:{post_id}")
-            await self.cache.clear_cache("posts:*")
+            await self.cache.clear_cache("posts:all")
+            await self.cache.clear_cache(f"posts:search:*")
+            await self.cache.clear_cache(f"posts:author:{author_id}")
+            
         return PostResponseSchema.model_validate(post)
 
     async def delete_post(self, post_id: str, author_id: str) -> bool:
@@ -107,5 +112,21 @@ class BlogService:
             )
         if self.cache:
             await self.cache.clear_cache(f"post:{post_id}")
-            await self.cache.clear_cache("posts:*")
+            await self.cache.clear_cache("posts:all")
+            await self.cache.clear_cache(f"posts:search:*")
+            await self.cache.clear_cache(f"posts:author:{author_id}")
+
         return deleted
+
+    async def get_my_posts(self, author_id: str) -> list[PostResponseSchema]:
+        """ Get all blog posts created by the authenticated user """
+        if self.cache:
+            cache_key = f"posts:author:{author_id}"
+            cache_data = await self.cache.get_cache(cache_key)
+            if cache_data:
+                return [PostResponseSchema(**post) for post in cache_data]
+            
+        posts = await self.repository.get_post_by_id(author_id)
+        if self.cache:
+            await self.cache.set_cache(cache_key, [post.model_dump(mode="json") for post in posts], expire=600)
+        return [PostResponseSchema.model_validate(post) for post in posts]

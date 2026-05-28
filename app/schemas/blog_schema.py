@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from app.utils.validation_utils import PyObjectId
+from app.schemas.user_schema import UserResponseSchema
 class PostCreateSchema(BaseModel):
     """ Schema for creating a blog post. """
     title: str = Field(..., min_length=3, max_length=50)
@@ -18,3 +19,6 @@ class PostResponseSchema(PostCreateSchema):
     model_config = {
         "from_attributes": True
     }
+    
+class UserWithBlogsResponseSchema(UserResponseSchema):
+    blogs: list[PostResponseSchema]
