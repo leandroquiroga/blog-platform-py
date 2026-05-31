@@ -5,6 +5,8 @@ from app.routes.auth_routes import router as auth_router
 from app.config.database_config import DatabaseConfig
 from app.config.redis_config import connect_redis, disconnect_redis
 from app.config.setting_config import settings
+from app.middlewares.rate_limit_middleware import RateLimitMiddleware
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -24,6 +26,8 @@ app = FastAPI(
 )
 
 
+# middlewares
+app.add_middleware(RateLimitMiddleware)
 
 # Routes
 app.include_router(blog_router)
